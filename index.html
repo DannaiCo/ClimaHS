@@ -14,16 +14,14 @@ body {
 }
 
 .container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  width: 1346px;
+  height: 1154px;
+  transform-origin: top left;
 }
 #fondoImagen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: 1346px;
+  height: 1154px;
   object-fit: cover;
 }
 
@@ -240,6 +238,22 @@ setInterval(updateBackgroundImage, 300000);
 
 fetchWeather();
 setInterval(fetchWeather, 600000);
+
+  function scaleContainer() {
+  const baseWidth = 1346;
+  const baseHeight = 1154;
+
+  const scaleX = window.innerWidth / baseWidth;
+  const scaleY = window.innerHeight / baseHeight;
+
+  const scale = Math.min(scaleX, scaleY);
+
+  const container = document.querySelector(".container");
+  container.style.transform = `scale(${scale})`;
+}
+
+scaleContainer();
+window.addEventListener("resize", scaleContainer);
 
 </script>
 
