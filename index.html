@@ -216,7 +216,9 @@ async function fetchWeather() {
     const iconPath = getWeatherIcon(weatherId, iconCode);
 
     document.getElementById("weather").textContent = `${temperature}°C`;
-    document.getElementById("weatherText").textContent = description;
+    const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
+
+document.getElementById("weatherText").textContent = capitalizedDescription;
 
     const iconElement = document.getElementById("weatherIconBig");
 
