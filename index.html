@@ -20,12 +20,13 @@ body {
   width: 3840px;
   height: 2160px;
 
+  transform: scale(0.92);
   transform-origin: top left;
 
-  /* 🔥 AJUSTE FINO */
-  transform: scaleY(0.92); /* prueba entre 0.96 y 0.99 */
+  /* 🔥 compensación para eliminar franja negra */
+  width: calc(3840px / 0.92);
+  height: calc(2160px / 0.92);
 }
-
 #fondoImagen {
   position: absolute;
   top: 0;
