@@ -145,6 +145,20 @@ function updateBackgroundImage() {
 }
 
 /* ========================
+COLOR DE FONDO (NUEVO)
+======================== */
+
+function updateBackgroundColor() {
+  const hour = new Date().getHours();
+
+  if (hour >= 18 || hour < 6) {
+    document.body.style.background = "#b3d5f4"; // noche
+  } else {
+    document.body.style.background = "#dfe6ef"; // día
+  }
+}
+
+/* ========================
 ICONOS AGRUPADOS
 ======================== */
 
@@ -152,43 +166,36 @@ function getWeatherIcon(weatherId, iconCode) {
 
   const isNight = iconCode.includes("n");
 
-  // Tormenta
   if (weatherId >= 200 && weatherId < 300) {
     return "Iconos/Tormenta.svg";
   }
 
-  // Lluvia y llovizna
   if (weatherId >= 300 && weatherId < 600) {
     return "Iconos/Lluvia.svg";
   }
 
-  // Vientos fuertes
   if (weatherId === 771) {
     return "Iconos/Vientos fuertes.svg";
   }
 
-  // Niebla / bruma / atmósfera
   if (weatherId >= 700 && weatherId < 800) {
     return isNight
       ? "Iconos/Nublado(noche).svg"
       : "Iconos/Nublado.svg";
   }
 
-  // Cielo despejado
   if (weatherId === 800) {
     return isNight
       ? "Iconos/Despejado(Noche).svg"
       : "Iconos/Soleado.svg";
   }
 
-  // Nubes
   if (weatherId > 800) {
     return isNight
       ? "Iconos/Nublado(noche).svg"
       : "Iconos/Nublado.svg";
   }
 
-  // Fallback
   return isNight
     ? "Iconos/Despejado(Noche).svg"
     : "Iconos/Soleado.svg";
@@ -220,7 +227,7 @@ async function fetchWeather() {
     document.getElementById("weather").textContent = `${temperature}°C`;
     const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
 
-document.getElementById("weatherText").textContent = capitalizedDescription;
+    document.getElementById("weatherText").textContent = capitalizedDescription;
 
     const iconElement = document.getElementById("weatherIconBig");
 
@@ -244,10 +251,12 @@ setInterval(updateClock, 1000);
 updateBackgroundImage();
 setInterval(updateBackgroundImage, 300000);
 
+updateBackgroundColor();
+setInterval(updateBackgroundColor, 60000); // 🔥 se actualiza cada minuto
+
 fetchWeather();
 setInterval(fetchWeather, 600000);
 
- 
 </script>
 
 </body>
