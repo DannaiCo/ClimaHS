@@ -13,12 +13,17 @@ body {
   font-family: Arial, sans-serif;
 }
 
-container {
+.container {
   position: absolute;
   top: 0;
   left: 0;
   width: 3840px;
   height: 2160px;
+
+  transform-origin: top left;
+
+  /* 🔥 AJUSTE FINO */
+  transform: scaleY(0.97); /* prueba entre 0.96 y 0.99 */
 }
 
 #fondoImagen {
