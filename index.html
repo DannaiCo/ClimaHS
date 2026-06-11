@@ -1,270 +1,263 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hora, Fecha y Clima</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hora, Fecha y Clima</title>
 
-    <style>
-      body {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: #000;
-        font-family: Arial, sans-serif;
-      }
+<style>
+body {
+  margin: 0;
+  background: #dfe6ef;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
 
-      /* FONDO PNG */
-      img#fondo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-      }
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3840px;
+  height: 2160px;
 
-      .container {
-        position: relative;
-        width: 1440px;
-        height: 480px;
-      }
+ transform: scale(1, 0.80);
+transform-origin: center center;
+}
+#fondoImagen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3840px;
+  height: 2160px;
+}
 
-      /* HORA */
-      .time {
-        position: absolute;
-        top: 26%;
-        left: 17%;
-        transform: translate(-50%, -50%);
-        font-size: 118px;
-        font-weight: bold;
-        color: #ffffff;
-      }
+.time {
+  position: absolute;
+  top: 28%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  font-size: 317px;
+  font-weight: bold;
+  color: white;
+}
 
-      /* FECHA */
-      .date {
-        position: absolute;
-        top: 68%;
-        left: 18%;
-        transform: translate(-50%, -50%);
-        font-size: 48px;
-        font-weight: bold;
-        color: #0033d3;
-        text-align: center;
-        line-height: 1.1;
-      }
+.day-name {
+  position: absolute;
+  top: 55%;
+  left: 13%;
+  transform: translate(-50%, -50%);
+  font-size: 151px;
+  font-weight: bold;
+  color: #0033d3;
+}
 
-      /* ICONO GRANDE */
-      .weather-icon-big {
-        position: absolute;
-        top: 56%;
-        left: 57%;
-        transform: translate(-50%, -50%);
-        width: 192px;
-        height: 164px;
-      }
+.date {
+  position: absolute;
+  top: 55%;
+  left: 33%;
+  transform: translate(-50%, -50%);
+  font-size: 150px;
+  font-weight: bold;
+  color: #0033d3;
+  white-space: nowrap;
+}
 
-      /* TEMPERATURA */
-      .weather {
-        position: absolute;
-        top: 52%;
-        left: 74%;
-        transform: translate(-50%, -50%);
-        font-size: 107px;
-        font-weight: bold;
-        color: #0033d3;
-      }
+.weather-icon-big {
+  position: absolute;
+  top: 61%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+}
 
-      /* DESCRIPCIÓN */
-      .weather-description {
-        position: absolute;
-        top: 72%;
-        left: 74%;
-        transform: translate(-50%, -50%);
-        font-size: 44px;
-        color: #0033d3;
-      }
+.weather {
+  position: absolute;
+  top: 44%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  font-size: 298px;
+  font-weight: bold;
+  color: #0033d3;
+}
 
-      /* CIUDAD */
-      .city {
-        position: absolute;
-        top: 22%;
-        left: 69%;
-        transform: translate(-50%, -50%);
-        font-size: 59px;
-        font-weight: semibold;
-        color: #6b6f75;
-      }
-    </style>
-  </head>
+.weather-description {
+  position: absolute;
+  top: 79%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  font-size: 90px;
+  color: #0033d3;
+}
+</style>
+</head>
 
-  <body>
-    <div class="container">
-      <!-- FONDO PNG -->
-      <img id="fondo" src="CLIMADIA.png" alt="Fondo" />
+<body>
+<div class="container">
 
-      <div id="clock" class="time"></div>
-      <div id="date" class="date"></div>
+<img id="fondoImagen" src="CLIMADIA.png" />
 
-      <img id="weatherIconBig" class="weather-icon-big" src="Iconos/Soleado.svg" alt="clima" />
-      <div class="city">Bogotá D.C</div>
-      <div id="weather" class="weather"></div>
-      <div id="weatherText" class="weather-description"></div>
-    </div>
+<div id="clock" class="time"></div>
+<div id="dayName" class="day-name"></div>
+<div id="date" class="date"></div>
 
-    <script>
-      /* ========================
-   RELOJ Y FECHA
+<img id="weatherIconBig" class="weather-icon-big" src="Iconos/Soleado.svg" />
+
+<div id="weather" class="weather"></div>
+<div id="weatherText" class="weather-description"></div>
+
+</div>
+
+<script>
+
+/* ========================
+RELOJ
 ======================== */
-      function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        document.getElementById("clock").textContent = `${hours}:${minutes}`;
 
-        const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-        const months = [
-          "Enero",
-          "Febrero",
-          "Marzo",
-          "Abril",
-          "Mayo",
-          "Junio",
-          "Julio",
-          "Agosto",
-          "Septiembre",
-          "Octubre",
-          "Noviembre",
-          "Diciembre"
-        ];
+function updateClock() {
+  const now = new Date();
 
-        const dayName = days[now.getDay()];
-        const day = now.getDate();
-        const month = months[now.getMonth()];
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
 
-        document.getElementById("date").innerHTML = `${dayName} ${day} de ${month}`;
-      }
+  document.getElementById("clock").textContent = `${hours}:${minutes}`;
 
-      /* ========================
-   CAMBIO PNG DÍA / NOCHE
+  const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+  const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+  document.getElementById("dayName").innerHTML = days[now.getDay()];
+  document.getElementById("date").textContent = `${now.getDate()} de ${months[now.getMonth()]}`;
+}
+
+/* ========================
+FONDO DIA / NOCHE
 ======================== */
-      function updateBackgroundVideo() {
-        const now = new Date();
-        const hour = now.getHours();
-        const background = document.getElementById("fondo");
 
-        let newSrc;
+function updateBackgroundImage() {
+  const hour = new Date().getHours();
+  const fondo = document.getElementById("fondoImagen");
 
-        if (hour >= 18 || hour < 6) {
-          newSrc = "CLIMANOCHE.png";
-        } else {
-          newSrc = "CLIMADIA.png";
-        }
+  if (hour >= 18 || hour < 6) {
+    fondo.src = "CLIMANOCHE.png";
+  } else {
+    fondo.src = "CLIMADIA.png";
+  }
+}
 
-        if (background.getAttribute("src") !== newSrc) {
-          background.setAttribute("src", newSrc);
-        }
-      }
-
-      /* ========================
-   ICONOS PERSONALIZADOS
+/* ========================
+COLOR DE FONDO (NUEVO)
 ======================== */
-function getWeatherIconById(weatherId, iconCode) {
+
+function updateBackgroundColor() {
+  const hour = new Date().getHours();
+
+  if (hour >= 18 || hour < 6) {
+    document.body.style.background = "#b3d5f4"; // noche
+  } else {
+    document.body.style.background = "#dfe6ef"; // día
+  }
+}
+
+/* ========================
+ICONOS AGRUPADOS
+======================== */
+
+function getWeatherIcon(weatherId, iconCode) {
+
   const isNight = iconCode.includes("n");
 
-  // TORMENTAS
   if (weatherId >= 200 && weatherId < 300) {
     return "Iconos/Tormenta.svg";
   }
 
-  // LLOVIZNA
-  if (weatherId >= 300 && weatherId < 400) {
-    return "Iconos/Lluvia_Suave.svg";
+  if (weatherId >= 300 && weatherId < 600) {
+    return "Iconos/Lluvia.svg";
   }
 
-  // LLUVIA
-  if (weatherId >= 500 && weatherId < 600) {
-    if (weatherId >= 520) {
-      return "Iconos/Lluvia_Fuerte.svg";
-    }
-    return "Iconos/Lluvia_Suave.svg";
+  if (weatherId === 771) {
+    return "Iconos/Vientos fuertes.svg";
   }
 
-  // NIEBLA Y ATMÓSFERA
   if (weatherId >= 700 && weatherId < 800) {
-    return "Iconos/Nublado.svg";
+    return isNight
+      ? "Iconos/Nublado(noche).svg"
+      : "Iconos/Nublado.svg";
   }
 
-  // CIELO DESPEJADO
   if (weatherId === 800) {
     return isNight
-      ? "Iconos/Despejado_Noche.svg"
+      ? "Iconos/Despejado(Noche).svg"
       : "Iconos/Soleado.svg";
   }
 
-  // NUBES
   if (weatherId > 800) {
-    if (weatherId === 801) {
-      return isNight
-        ? "Iconos/Parcialmente_Nublado_Noche.svg"
-        : "Iconos/Parcialmente_Nublado.svg";
-    }
-    return "Iconos/Nublado.svg";
+    return isNight
+      ? "Iconos/Nublado(noche).svg"
+      : "Iconos/Nublado.svg";
   }
 
-  // FALLBACK
   return isNight
-    ? "Iconos/Despejado_Noche.svg"
+    ? "Iconos/Despejado(Noche).svg"
     : "Iconos/Soleado.svg";
 }
 
-      /* ========================
-   CLIMA API
-======================== */
-      async function fetchWeather() {
-        const apiKey = "65fd2c24a1679d15f7b59502783522f7";
-        const city = "Bogotá";
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
-
-        try {
-          const response = await fetch(url);
-          const data = await response.json();
-
-          if (data.weather && data.main) {
-            const temperature = Math.round(data.main.temp);
-            const description = data.weather[0].description;
-            const iconCode = data.weather[0].icon;
-
-            document.getElementById("weather").textContent = `${temperature}°C`;
-            document.getElementById("weatherText").textContent =
-              description.charAt(0).toUpperCase() + description.slice(1);
-
-            const weatherId = data.weather[0].id;
-            const iconPath = getWeatherIconById(weatherId, iconCode);
-            document.getElementById("weatherIconBig").src = iconPath;
-          }
-        } catch (error) {
-          document.getElementById("weather").textContent = "--";
-          document.getElementById("weatherText").textContent = "";
-        }
-      }
-
-      /* ========================
-   INICIALIZACIÓN
+/* ========================
+CLIMA
 ======================== */
 
-      updateClock();
-      setInterval(updateClock, 1000);
+async function fetchWeather() {
 
-      updateBackgroundVideo();
-      setInterval(updateBackgroundVideo, 60000);
+  const apiKey = "65fd2c24a1679d15f7b59502783522f7";
+  const city = "Bogotá";
 
-      fetchWeather();
-      setInterval(fetchWeather, 10 * 60 * 1000);
-    </script>
-  </body>
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
 
+  try {
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const temperature = Math.round(data.main.temp);
+    const description = data.weather[0].description;
+    const weatherId = data.weather[0].id;
+    const iconCode = data.weather[0].icon;
+
+    const iconPath = getWeatherIcon(weatherId, iconCode);
+
+    document.getElementById("weather").textContent = `${temperature}°C`;
+    const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
+
+    document.getElementById("weatherText").textContent = capitalizedDescription;
+
+    const iconElement = document.getElementById("weatherIconBig");
+
+    if (iconElement.src !== iconPath) {
+      iconElement.src = iconPath;
+    }
+
+  } catch (error) {
+    document.getElementById("weather").textContent = "--";
+    console.error("Error clima:", error);
+  }
+}
+
+/* ========================
+INIT
+======================== */
+
+updateClock();
+setInterval(updateClock, 1000);
+
+updateBackgroundImage();
+setInterval(updateBackgroundImage, 300000);
+
+updateBackgroundColor();
+setInterval(updateBackgroundColor, 60000); // 🔥 se actualiza cada minuto
+
+fetchWeather();
+setInterval(fetchWeather, 600000);
+
+</script>
+
+</body>
 </html>
